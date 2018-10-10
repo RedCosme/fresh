@@ -19,7 +19,7 @@
             total_price = 0;
             total_count = 0;
             {#循环取出每件商品的数量和价格进行计算总价， 计算被选中的商品条目数量#}
-            $(":checked:not('#checkall1')").each(function () {
+            $(":checked:not('#checkall')").each(function () {
                 count = parseInt($(this).parent().siblings(".col06").find("input").val());
                 price = parseFloat($(this).parent().siblings(".col05").find("em").text());
                 total = count * price;
@@ -39,15 +39,8 @@
             {#全选或者全消#}
             {#TODO #}
             $("#checkall").click(function () {
-                alert(this.checked);
-                if(this.checked){
-                    $(":checked").prop("checked", true);
-                }
-                else{
-                    $(":checked:not(#checkall)").prop("checked", false);
-                }
-               {#state = $(this).prop("checked");#}
-               {#$(":checked:not(#checkall)").prop("checked", state);#}
+               state = $(this).prop("checked");
+               $(":checkbox:not(#checkall)").prop("checked", state);
                total_all();
             });
             {#商品数量加#}
@@ -102,7 +95,7 @@
     {% endfor %}
 
     <ul class="settlements">
-		<li class="col01"><input type="checkbox" checked="checked" id="checkall1" name=""></li>
+		<li class="col01"><input type="checkbox" checked="checked" id="checkall" name=""></li>
 		<li class="col02">全选</li>
 		<li class="col03">合计(不含运费)：<span>¥</span><em id="total_price">42.60</em><br>共计<b id="total_count">2</b>件商品</li>
 		<li class="col04"><a href="place_order.html">去结算</a></li>
