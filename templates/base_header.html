@@ -1,0 +1,46 @@
+{% extends "base_footer.html" %}
+
+{% block main %}
+    <div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+                {% if request.session.username %}
+                    <div class="login_btn fl">
+					    欢迎您：<em>{{ request.session.username }}</em>
+                        <span>|</span>
+                        <a href="/account/logout/">注销</a>
+                    </div>
+                {% else %}
+                    <div class="login_btn fl">
+					    <a href="{% url 'user:login' %}">登录</a>
+					    <span>|</span>
+					    <a href="{% url 'user:register' %}">注册</a>
+				    </div>
+                {% endif %}
+
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="{% url 'user:info' %}">用户中心</a>
+					<span>|</span>
+					<a href="/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    {% block cart %}
+    <div class="search_bar clearfix">
+		<a class="logo fl" href="index.html"><img src="/static/images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;{{ title }}</div>
+		<div class="search_con fr">
+			<input class="input_text fl" type="text" placeholder="搜索商品">
+			<input class="input_btn fr" type="button" value="搜索">
+		</div>
+    </div>
+    {% endblock %}
+
+    {% block body %}
+    {% endblock %}
+{% endblock %}

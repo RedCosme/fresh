@@ -1,0 +1,98 @@
+{% extends "base_footer.html" %}
+
+{% block head %}
+    <script>
+        $(function () {
+            var user_error = false;
+            var password_error = false;
+
+            $('.name_input').blur(function () {
+                // $(this) 表示获取当前操作的input标签
+                if($(this).val() == ""){
+                    $('.user_error').html("输入用户名").show();
+                    user_error = true;
+                }else{
+                    // 已经输入隐藏错误信息
+                    $('.user_error').hide();
+                    user_error = false;
+                }
+            });
+
+            $('.pass_input').blur(function () {
+                // $(this) 表示获取当前操作的input标签
+                if($(this).val() == ""){
+                    $('.pwd_error').html("请输入密码").show();
+                    password_error = true;
+                }else{
+                    // 已经输入隐藏错误信息
+                    $('.pwd_error').hide();
+                    password_error = false
+                }
+            });
+
+            $('form').submit(function () {
+                name = $('.name_input').val().length;
+                password = $('.pass_input').val();
+                if(name==0){
+                    user_error = true;
+                }
+                if(password==""){
+                    password_error = true;
+                }
+
+                if(user_error == false && password_error == false){
+                    // 只有用户和密码输入框同时输入的时候才不阻止提交
+                    return true;
+                }else{
+                    return false;
+                }
+            });
+
+            if(1=={{ is_user }}){
+                $('.user_error').html("用户错误").show();
+                user_error = true;
+            }
+            if(1=={{ is_password }}){
+                $('.pwd_error').html("密码错误").show();
+            }
+        });
+    </script>
+{% endblock %}
+{% block title %}
+    天天生鲜-登陆
+{% endblock %}
+
+{% block main %}
+    <div class="login_top clearfix">
+		<a class="login_logo" href="register.html"><img src="/static/images/logo02.png"></a>
+	</div>
+    <div class="login_form_bg">
+		<div class="login_form_wrap clearfix">
+			<div class="login_banner fl"></div>
+			<div class="slogan fl">日夜兼程 · 急速送达</div>
+			<div class="login_form fr">
+				<div class="login_title clearfix">
+					<h1>用户登录</h1>
+					<a href="/account/register/">立即注册</a>
+				</div>
+				<div class="form_input">
+					<form action="{% url 'user:login' %}" method="POST">
+						<input name="username" class="name_input" type="text" placeholder="请输入用户名", value="{{ username }}">
+						<div class="user_error">输入错误</div>
+
+						<input name="password" class="pass_input" type="password" placeholder="请输入密码">
+                        <h1>aaa</h1>
+
+						<div class="pwd_error">输入错误</div>
+						<div class="more_input clearfix">
+							<input type="checkbox">
+							<label>记住用户名</label>
+							<a href="#">忘记密码</a>
+						</div>
+						<input class="input_submit" type="submit" value="登录">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

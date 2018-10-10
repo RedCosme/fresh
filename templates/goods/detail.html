@@ -1,0 +1,108 @@
+{% extends "goods/base_goods.html" %}
+
+{% block head %}
+    <script>
+        {#添加商品到购物车#}
+        function send_cart_add(){
+            num = parseInt($("#num_show").val());
+            $.get("/cart/add/{{ goods.id }}/"+ num + "/", function (data) {
+                $("#show_count").text(data.cart_count);
+            })
+        }
+        $(function () {
+            {#只有点击加入购物车的时候才添加商品到购物车#}
+            $("#add_cart").click(function () {
+                send_cart_add();
+            });
+
+            $("#num_show").blur(function () {
+                num = parseInt($("#num_show").val());  // val() 返回或者是设置被选中这个元素的
+                price = $("#price").text(); // 拿出商品的单价
+                total = num * price; // 计算商品的总价
+
+                $("#num_show").val(num); // 展示购买的商品数量
+                $("#goods_total").text(total.toFixed(2)); // 展示商品的总价
+            });
+            $("#add").click(function () {
+                num = parseInt($("#num_show").val());
+                $("#num_show").val(num+1);
+                $("#num_show").blur();
+
+            });
+            $("#reduce").click(function () {
+                num = parseInt($("#num_show").val());
+                if(num>1){
+                    $("#num_show").val(num-1);
+                    $("#num_show").blur();
+                }
+            })
+        })
+    </script>
+{% endblock head %}
+
+
+{% block content %}
+    <div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>&gt;</span>
+		<a href="#">{{ goods.category.category_name }}</a>
+		<span>&gt;</span>
+		<a href="#">商品详情</a>
+	</div>
+    <div class="goods_detail_con clearfix">
+		<div class="goods_detail_pic fl"><img src="{{ goods.pic }}"></div>
+
+		<div class="goods_detail_list fr">
+			<h3>{{ goods.goods_name }}</h3>
+			<p>{{ goods.abstract }}</p>
+			<div class="prize_bar">
+				<span class="show_pirze" >¥<em id="price">{{ goods.price }}</em></span>
+				<span class="show_unit">单  位：{{ goods.unit }}</span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl">数 量：</div>
+				<div class="num_add fl">
+					<input class="num_show fl" type="text" value="1" id="num_show">
+					<a class="add fr" href="javascript:;" id="add">+</a>
+					<a class="minus fr" href="javascript:;" id="reduce">-</a>
+				</div>
+			</div>
+			<div class="total">总价：<em id="goods_total">{{ goods.price }}</em>元</div>
+			<div class="operate_btn">
+				<a class="buy_btn" href="javascript:;">立即购买</a>
+				<a class="add_cart" id="add_cart" href="javascript:;">加入购物车</a>
+			</div>
+		</div>
+	</div>
+    <div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+                    {% for new in news %}
+                        <li>
+                            <a href="/goods/detail/{{ new.id }}/"><img src="{{ new.pic }}"></a>
+                            <h4>{{ new.goods_name }}</h4>
+                            <div class="prize">￥{{ new.price }}</div>
+                        </li>
+                    {% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+			</ul>
+
+			<div class="tab_content">
+				<dl>
+					<dt>商品详情：</dt>
+					<dd>{{ goods.desc }} </dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

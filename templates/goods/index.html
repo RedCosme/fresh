@@ -1,0 +1,93 @@
+{% extends 'base_header.html' %}
+
+{#导入本html专属的js#}
+{% block head %}
+    <script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/static/js/slide.js"></script>
+{% endblock %}
+
+{% block cart %}
+<div class="search_bar clearfix">
+    <a class="logo fl" href="index.html"><img src="/static/images/logo.png"></a>
+    <div class="search_con fl">
+			<input class="input_text fl" type="text" placeholder="搜索商品">
+			<input class="input_btn fr" type="button" value="搜索">
+    </div>
+{#    购物车的展示框div#}
+    <div class="guest_cart fr">
+        <a href="#" class="cart_name fl">我的购物车</a>
+        <div class="goods_count fr" id="show_count">{{ cart_count }}</div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block body %}
+<div class="navbar_con">
+		<div class="navbar">
+			<h1 class="fl">全部商品分类</h1>
+			<ul class="navlist fl">
+				<li><a href="">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+    <div class="center_con clearfix">
+		<ul class="subnav fl">
+			<li><a class="fruit" href="#model01">新鲜水果</a></li>
+			<li><a class="seafood" href="#model02">海鲜水产</a></li>
+			<li><a class="meet" href="#model03">猪牛羊肉</a></li>
+			<li><a class="egg" href="#model04">禽类蛋品</a></li>
+			<li><a class="vegetables" href="#model05">新鲜蔬菜</a></li>
+			<li><a class="ice" href="#model06">速冻食品</a></li>
+		</ul>
+		<div class="slide fl">
+			<ul class="slide_pics">
+				<li style="left: -760px;"><img alt="幻灯片" src="/static/images/slide.jpg"></li>
+				<li style="left: -759.96px;"><img alt="幻灯片" src="/static/images/slide02.jpg"></li>
+				<li style="left: 0.03px;"><img alt="幻灯片" src="/static/images/slide03.jpg"></li>
+				<li style="left: -760px;"><img alt="幻灯片" src="/static/images/slide04.jpg"></li>
+			</ul>
+			<div class="prev"></div>
+			<div class="next"></div>
+			<ul class="points"></ul>
+		</div>
+		<div class="adv fl">
+			<a href="#"><img src="/static/images/adv01.jpg"></a>
+			<a href="#"><img src="/static/images/adv02.jpg"></a>
+		</div>
+	</div>
+
+    {% for category, goods_list in new_goods_dict.items %}
+    <div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model0{{ forloop.counter }}">{{ category.category_name }}</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				<a href="#">鲜芒</a>
+				<a href="#">加州提子</a>
+				<a href="#">亚马逊牛油果</a>
+			</div>
+			<a class="goods_more fr" id="fruit_more" href="/goods/list/{{ category.id }}/default/">查看更多 &gt;</a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="{{ category.image }}"></div>
+			<ul class="goods_list fl">
+
+                {% for goods in goods_list %}
+                    <li>
+                        <h4>{{ goods.goods_name }}</h4>
+                        <a href="/goods/detail/{{ goods.id }}/"><img src="{{ goods.pic }}"></a>
+                        <div class="prize">￥ {{ goods.price }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+    {% endfor %}
+
+{% endblock %}

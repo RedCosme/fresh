@@ -1,0 +1,17 @@
+{% extends "base_header.html" %}
+
+{% block body %}
+<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a class="active" href="user_center_info.html">· 个人信息</a></li>
+				<li><a href="user_center_order.html">· 全部订单</a></li>
+				<li><a href="user_center_site.html">· 收货地址</a></li>
+			</ul>
+		</div>
+{#        输出用户中心右侧显示内容占位#}
+        {% block right_content %}
+        {% endblock %}
+</div>
+{% endblock %}
