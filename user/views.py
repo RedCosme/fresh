@@ -119,6 +119,7 @@ def info(request):
     # 从session中拿到商品id的列表（在商品详情里写入session的）
     goods_id_list = request.session.get(str(user_id), [])
     # 用户最近浏览的商品记录
+    # aa
     goods_list = []
     # 通过便利商品id列表，拿到商品对象组成了一个有序的商品对象列表
     for goods_id in goods_id_list:
