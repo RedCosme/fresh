@@ -1,0 +1,92 @@
+{% extends "base_header.html" %}
+
+{% block head %}
+    <script>
+        $(function () {
+            {#每一种商品的小计#}
+            var goods_price = 0;
+            {#商品的总件数#}
+            var total_count = 0;
+            {#商品的总金额（不包含运费）#}
+            var total_price = 0;
+
+            {#计算小计，总金额，实付金额#}
+            $(".goods_list_td").each(function () {
+                {#取当前ul的价格和数量#}
+                count = parseInt($(this).children(".col06").text());
+                price = parseFloat($(this).children(".col05").text());
+                goods_price = count * price;
+                {#将这个小计显示在html里#}
+                $(this).children(".col07").text(goods_price.toFixed(2));
+
+                {#计算总金额和数量#}
+                total_count++;
+                total_price += goods_price;
+            });
+
+            {#修改网页中的总金额和总商品数#}
+            $("#total_count").text(total_count);
+            $("#total_price").text(total_price);
+
+            {#修改实付金额#}
+            $("#shifu").text(total_price+10)
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h3 class="common_title">确认收货地址</h3>
+    <div class="common_list_con clearfix">
+		<dl>
+			<dt>寄送到：</dt>
+			<dd><input type="radio" checked="">{{ user.address }} （{{ user.username }} 收） {{ user.phone }}</dd>
+		</dl>
+		<a class="edit_site" href="user_center_site.html">编辑收货地址</a>
+	</div>
+    <h3 class="common_title">支付方式</h3>
+    <div class="common_list_con clearfix">
+		<div class="pay_style_con clearfix">
+			<input name="pay_style" type="radio" checked="">
+			<label class="cash">货到付款</label>
+			<input name="pay_style" type="radio">
+			<label class="weixin">微信支付</label>
+			<input name="pay_style" type="radio">
+			<label class="zhifubao"></label>
+			<input name="pay_style" type="radio">
+			<label class="bank">银行卡支付</label>
+		</div>
+	</div>
+    <h3 class="common_title">商品列表</h3>
+    <div class="common_list_con clearfix">
+		<ul class="goods_list_th clearfix">
+			<li class="col01">商品名称</li>
+			<li class="col02">商品单位</li>
+			<li class="col03">商品价格</li>
+			<li class="col04">数量</li>
+			<li class="col05">小计</li>
+		</ul>
+        {% for cart in cart_info_list %}
+            <ul class="goods_list_td clearfix">
+                <li class="col01">{{ forloop.counter }}</li>
+                <li class="col02"><img src="{{ cart.goods.pic }}"></li>
+                <li class="col03">{{ cart.goods.goods_name }}</li>
+                <li class="col04">{{ cart.goods.unit }}</li>
+                <li class="col05">{{ cart.goods.price }}</li>
+                <li class="col06">{{ cart.count }}</li>
+                <li class="col07">{{ cart.goods.price }}元</li>
+            </ul>
+        {% endfor %}
+
+	</div>
+    <h3 class="common_title">总金额结算</h3>
+    <div class="common_list_con clearfix">
+		<div class="settle_con">
+			<div class="total_goods_count">共<em id="total_count">2</em>件商品，总金额<b id="total_price">42.60</b><b>元</b></div>
+			<div class="transit">运费：<b>10元</b></div>
+			<div class="total_pay">实付款：<b id="shifu">52.60</b><b>元</b></div>
+		</div>
+	</div>
+    <div class="order_submit clearfix">
+		<a id="order_btn" href="javascript:;">提交订单</a>
+	</div>
+{% endblock %}

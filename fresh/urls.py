@@ -23,5 +23,7 @@ urlpatterns = [
     # 加入商品的路由
     path('goods/', include("goods.urls", namespace="goods")),
     # 加入购物车的路由
-    path('cart/', include("cart.urls", namespace="cart"))
+    path('cart/', include("cart.urls", namespace="cart")),
+    # 加入订单的路由
+    path('order/', include("order.urls", namespace="order"))
 ]
