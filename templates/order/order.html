@@ -29,8 +29,42 @@
             $("#total_price").text(total_price);
 
             {#修改实付金额#}
-            $("#shifu").text(total_price+10)
-        })
+            shifu = total_price + 10;
+            $("#shifu").text(shifu);
+
+            {#点击订单提交生成一个订单信息#}
+            $("#order_btn").click(function () {
+                {#获取购物车的列表#}
+                var cart_list = [];
+                $(".goods_list_td").each(function () {
+                    cart_id = $(this).attr("id");
+                    cart_list.push(cart_id);
+
+                });
+                alert(cart_list);
+                $.ajax({
+                    url: "/order/add_order/",
+                    type: "POST",
+                    dataType: "json",
+                    {#防止深度序列化#}
+                    traditional: true,
+                    data: {
+                        cart_list: cart_list,
+                        total_price: shifu,
+                    },
+
+                    success:function (data) {
+                        console.log(data);
+                        if(data["result"]=="success"){
+                            window.location.href = "/goods/index/";
+                        }else{
+                            window.location.href = "/order/";
+                        }
+                    }
+
+                });
+            });
+        });
     </script>
 {% endblock %}
 
@@ -66,7 +100,7 @@
 			<li class="col05">小计</li>
 		</ul>
         {% for cart in cart_info_list %}
-            <ul class="goods_list_td clearfix">
+            <ul class="goods_list_td clearfix" id="{{ cart.id }}">
                 <li class="col01">{{ forloop.counter }}</li>
                 <li class="col02"><img src="{{ cart.goods.pic }}"></li>
                 <li class="col03">{{ cart.goods.goods_name }}</li>
