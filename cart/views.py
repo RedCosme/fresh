@@ -38,3 +38,12 @@ def add(request, goods_id, count):
         cart_count = cart_count_goods(request, CartModel)
         return JsonResponse({"cart_count": cart_count})
     return redirect("/cart/")
+
+
+@login_required
+def delete(request, cart_id):
+    """从购物车中删除某个商品"""
+    cart = CartModel.objects.get(id=cart_id)
+    cart.delete()
+    # 后端尽量不传给前端bool类型的数据，后端也不接受前端传来的bool类型
+    return JsonResponse({"success": 1})

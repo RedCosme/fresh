@@ -26,12 +26,24 @@
                 total_price += total;
                 total_count++;
             });
+            alert(total_price);
             {#展示总价格#}
             $("#total_price").text(total_price.toFixed(2));
             {#展示选中的商品条目#}
             $("#total_count").text(total_count);
 
         }
+        
+        {#删除购物车中的商品#}
+        function delete_cart(cart_id){
+            delete_url = "/cart/delete/" + cart_id + "/";
+            $.get(delete_url, function (data) {
+                $("ul").remove("ul[id=" + cart_id + "]");
+                total_all();
+            });
+
+        }
+
         $(function () {
             total_s();
             total_all();
@@ -39,6 +51,8 @@
             {#全选或者全消#}
             {#TODO #}
             $("#checkall").click(function () {
+                {#先获取当前的选中状态#}
+                {#prop("checked") 获取checked属性的值：true/false#}
                state = $(this).prop("checked");
                $(":checkbox:not(#checkall)").prop("checked", state);
                total_all();
@@ -60,7 +74,8 @@
                 total_s();
                 total_all();
             })
-
+            
+            
         })
 
     </script>
@@ -76,7 +91,7 @@
 		<li class="col06">操作</li>
 	</ul>
     {% for cart in carts %}
-        <ul class="cart_list_td clearfix">
+        <ul class="cart_list_td clearfix" id="{{ cart.id }}">
             <li class="col01"><input type="checkbox" checked=""></li>
             <li class="col02"><img src="{{ cart.goods.pic }}"></li>
             <li class="col03">{{ cart.goods.goods_name }}<br><em>{{ cart.goods.price }}元/{{ cart.goods.unit }}</em></li>
@@ -90,7 +105,7 @@
                 </div>
             </li>
             <li class="col07">25.80元</li>
-            <li class="col08"><a href="javascript:;">删除</a></li>
+            <li class="col08"><a href="javascript:delete_cart({{ cart.id }});">删除</a></li>
 	    </ul>
     {% endfor %}
 
