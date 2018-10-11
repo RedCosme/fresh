@@ -40,7 +40,7 @@
 			</div>
 
 			<ul class="goods_type_list clearfix">
-                {% for goods in goods_list %}
+                {% for goods in page %}
                     <li>
                         <a href="/goods/detail/{{ goods.id }}/"><img src="{{ goods.pic }}"></a>
                         <h4><a href="/goods/detail/{{ goods.id }}/">{{ goods.goods_name }}</a></h4>
@@ -55,13 +55,21 @@
 			</ul>
 
 			<div class="pagenation">
-				<a href="#">&lt;上一页</a>
-				<a class="active" href="#">1</a>
-				<a href="#">2</a>
-				<a href="#">3</a>
-				<a href="#">4</a>
-				<a href="#">5</a>
-				<a href="#">下一页&gt;</a>
+                {% if page.has_previous %}
+                    <a href="/goods/list/{{ category.id }}/{{ sort }}/{{ page.previous_page_number }}/"><上一页</a>
+                {% endif %}
+
+	            {% for num in page.paginator.page_range %}
+                    {% if page_num == num %}
+                        <a href="/goods/list/{{ category.id }}/{{ sort }}/{{ num }}/" class="active">{{ num }}</a>
+                    {% else %}
+                        <a href="/goods/list/{{ category.id }}/{{ sort }}/{{ num }}/">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page.has_next %}
+                    <a href="/goods/list/{{ category.id }}/{{ sort }}/{{ page.next_page_number }}/">下一页></a>
+                {% endif %}
 			</div>
 		</div>
 	</div>

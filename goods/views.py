@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 from goods.models import CategoryModel, CategoryGoodsModel, GoodsModel
 from cart.models import CartModel
@@ -34,9 +35,10 @@ def index(request):
     return render(request, "goods/index.html", context)
 
 
-def list(request, category_id, sort):
+def list(request, category_id, sort, page_num):
     """商品列表视图"""
     """category_id: 分类的id
+       page_num: 获取当前页的页码
        sort: 排序字段（默认：default, 价格：price, 人气: popular）"""
     category = CategoryModel.objects.get(id=category_id)
     # 取该类型最新的两个商品
@@ -51,6 +53,10 @@ def list(request, category_id, sort):
     elif sort == "popular":  # 按人气排序
         goods_list = GoodsModel.objects.filter(category_id=category_id).order_by("-popular")
 
+    # 根据商品的列表goods_list 进行分页
+    paginator = Paginator(goods_list, 2)
+    page = paginator.page(page_num)
+
     cart_count = cart_count_goods(request, CartModel)
     context = {
         "category": category, # 商品的分类对象
@@ -58,6 +64,8 @@ def list(request, category_id, sort):
         "goods_list": goods_list, # 排序后的商品列表
         "sort": sort, # 排序的条件
         "cart_count": cart_count, # 购物车中的商品数量
+        "page": page,
+        "page_num": page_num, # 当前的页数
     }
 
     return render(request, "goods/list.html", context)
