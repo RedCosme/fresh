@@ -26,7 +26,6 @@
                 total_price += total;
                 total_count++;
             });
-            alert(total_price);
             {#展示总价格#}
             $("#total_price").text(total_price.toFixed(2));
             {#展示选中的商品条目#}
@@ -73,8 +72,23 @@
                 }
                 total_s();
                 total_all();
-            })
-            
+            });
+            {#修改一个商品的选中状态，同时修改全选的状态, 然后修改总价#}
+            $(".check").click(function () {
+                {#获取当前被选中的复选框的个数, 不包含全选的复选框#}
+                if($(this).prop("checked")){
+                    check_number = $(".check:checked").length;
+                    if(check_number == $("input[type='checkbox']").length-1){
+                        {#设置全选复选框为选中状态#}
+                        $("#checkall").prop("checked", true);
+                    }
+                }else{
+                    {#如果不满足上述条件，修改全选复选框状态为false#}
+                    $("#checkall").prop("checked", false);
+                }
+                {#修改选中的商品的总价和选中商品的个数#}
+                total_all();
+            });
             
         })
 
@@ -92,7 +106,7 @@
 	</ul>
     {% for cart in carts %}
         <ul class="cart_list_td clearfix" id="{{ cart.id }}">
-            <li class="col01"><input type="checkbox" checked=""></li>
+            <li class="col01"><input class="check" type="checkbox" checked=""></li>
             <li class="col02"><img src="{{ cart.goods.pic }}"></li>
             <li class="col03">{{ cart.goods.goods_name }}<br><em>{{ cart.goods.price }}元/{{ cart.goods.unit }}</em></li>
             <li class="col04">{{ cart.goods.unit }}</li>
