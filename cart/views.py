@@ -13,7 +13,7 @@ def cart(request):
     user_id = request.session["user_id"]
     carts = CartModel.objects.filter(user_id=user_id)
 
-    return render(request, "cart/cart.html", {"carts": carts})
+    return render(request, "cart/cart.html", {"carts": carts, "title": "购物车"})
 
 
 @login_required
@@ -46,4 +46,13 @@ def delete(request, cart_id):
     cart = CartModel.objects.get(id=cart_id)
     cart.delete()
     # 后端尽量不传给前端bool类型的数据，后端也不接受前端传来的bool类型
+    return JsonResponse({"success": 1})
+
+
+@login_required
+def update(request, cart_id, count):
+    """更新购物车内商品的数量"""
+    cart = CartModel.objects.get(id=cart_id)
+    cart.count = count
+    cart.save()
     return JsonResponse({"success": 1})

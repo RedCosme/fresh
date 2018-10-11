@@ -89,7 +89,22 @@
                 {#修改选中的商品的总价和选中商品的个数#}
                 total_all();
             });
-            
+
+            {#修改购物车中商品的数量#}
+            $(".num_show").blur(function () {
+                current_count = parseInt($(this).val());
+                stock = $(this).parent().attr("id");
+                if(current_count > stock){
+                    $(this).val(stock);
+                }
+                {#同步到数据库中的购物车#}
+                cart_id = $(this).parent().parent().attr("id");
+                url = "/cart/update/"+ cart_id + "/" + $(this).val() + "/";
+                $.get(url, function (data) {
+                    total_s();
+                    total_all();
+                });
+            })
         })
 
     </script>
@@ -111,8 +126,8 @@
             <li class="col03">{{ cart.goods.goods_name }}<br><em>{{ cart.goods.price }}元/{{ cart.goods.unit }}</em></li>
             <li class="col04">{{ cart.goods.unit }}</li>
             <li class="col05"><em>{{ cart.goods.price }}</em>元</li>
-            <li class="col06">
-                <div class="num_add">
+            <li class="col06" id="{{ cart.id }}">
+                <div class="num_add" id="{{ cart.goods.stock }}">
                     <a class="add fl" href="javascript:;">+</a>
                     <input class="num_show fl" type="text" value="{{ cart.count }}">
                     <a class="minus fl" href="javascript:;">-</a>
