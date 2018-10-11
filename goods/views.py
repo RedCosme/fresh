@@ -41,6 +41,7 @@ def list(request, category_id, sort, page_num):
        page_num: 获取当前页的页码
        sort: 排序字段（默认：default, 价格：price, 人气: popular）"""
     category = CategoryModel.objects.get(id=category_id)
+
     # 取该类型最新的两个商品
     news = GoodsModel.objects.filter(category_id=category_id).order_by("-id")[:2]
     # 外键的用法

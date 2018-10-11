@@ -1,6 +1,6 @@
 from django.urls import path
 
-from user.views import register, register_post, login, info, logout
+from user.views import register, register_post, login, info, logout, all_order
 # 命名空间名字
 app_name = "user"
 urlpatterns = [
@@ -11,5 +11,7 @@ urlpatterns = [
     # 用户信息接口
     path("info/", info, name="info"),
     # 退出登陆
-    path("logout/", logout, name="logout")
+    path("logout/", logout, name="logout"),
+    # 全部订单
+    path("all_order/<int:page_num>/", all_order, name="all_order")
 ]

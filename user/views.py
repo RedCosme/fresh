@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.paginator import Paginator
 
 from user.models import UserModel
 from user.forms import UserRegisterForm, UserLoginForm
 from user.utils import login_required
 from goods.models import GoodsModel
+from order.models import OrderModel
 # Create your views here.
 
 
@@ -129,3 +131,21 @@ def info(request):
                "goods_list": goods_list,
                "title": "用户中心"}
     return render(request, "user/user_center_info.html", context)
+
+
+@login_required
+def all_order(request, page_num):
+    """全部订单"""
+    # 查询当前登陆用户的所有订单信息
+    user_id = request.session.get("user_id")
+    all_order = OrderModel.objects.filter(user_id=user_id)
+    # 每一页展示2个
+    paginator = Paginator(all_order, 2)
+    page = paginator.page(page_num)
+
+    context = {
+        "page": page,
+        "page_num": page_num,
+        "title": "全部订单"
+    }
+    return render(request, "user/user_center_order.html", context)

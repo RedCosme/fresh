@@ -47,7 +47,7 @@ def add_order(request):
     order.total_price = total_price
     order.is_pay = 0
     order.save()
-    print(cart_list)
+
     for cart_id in cart_list:
         cart = CartModel.objects.get(id=cart_id)
 
@@ -59,5 +59,4 @@ def add_order(request):
         order_goods.save()
         # 订单信息和订单对应的商品信息保存完毕，删除购物车中的商品
         cart.delete()
-
     return JsonResponse({"result": "success"})
