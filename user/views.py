@@ -129,7 +129,8 @@ def info(request):
 
     context = {"user_info": user_info,
                "goods_list": goods_list,
-               "title": "用户中心"}
+               "title": "用户中心",
+               "active": "info"}
     return render(request, "user/user_center_info.html", context)
 
 
@@ -146,6 +147,23 @@ def all_order(request, page_num):
     context = {
         "page": page,
         "page_num": page_num,
-        "title": "全部订单"
+        "title": "全部订单",
+        "active": "all_order"
     }
     return render(request, "user/user_center_order.html", context)
+
+
+def upload(request):
+    """上传接口"""
+
+    if request.method == "GET":
+        return render(request, "upload.html")
+
+    if request.method == "POST":
+        myfile = request.FILES.get("myfile")
+        ext = myfile.name.split(".")[-1]
+        filename = "test." + ext
+        with open(filename, "wb") as fp:
+            for chunk in myfile.chunks():
+                fp.write(chunk)
+        return JsonResponse({"result": "success"})

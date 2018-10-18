@@ -25,5 +25,7 @@ urlpatterns = [
     # 加入购物车的路由
     path('cart/', include("cart.urls", namespace="cart")),
     # 加入订单的路由
-    path('order/', include("order.urls", namespace="order"))
+    path('order/', include("order.urls", namespace="order")),
+    # 加入搜索的路由
+    path('search/', include("haystack.urls"))
 ]

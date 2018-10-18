@@ -8,14 +8,16 @@
 
 {% block cart %}
 <div class="search_bar clearfix">
-    <a class="logo fl" href="index.html"><img src="/static/images/logo.png"></a>
+    <a class="logo fl" href="/goods/index/"><img src="/static/images/logo.png"></a>
+    <form action="/search/" method="get" >
     <div class="search_con fl">
-			<input class="input_text fl" type="text" placeholder="搜索商品">
-			<input class="input_btn fr" type="button" value="搜索">
+			<input class="input_text fl" type="text" name="q" placeholder="搜索商品">
+			<input class="input_btn fr" type="submit" value="搜索">
     </div>
+    </form>
 {#    购物车的展示框div#}
     <div class="guest_cart fr">
-        <a href="#" class="cart_name fl">我的购物车</a>
+        <a href="/cart/" class="cart_name fl">我的购物车</a>
         <div class="goods_count fr" id="show_count">{{ cart_count }}</div>
     </div>
 </div>

@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 全文搜索的app 放在自己定义的app上面
+    'haystack',
     'user',
     'goods',
     'cart',
@@ -131,3 +133,16 @@ STATICFILES_DIRS = [
 ]
 
 APPEND_SLASH = False
+
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        # whoosh引擎，这个搜索引擎是用纯python去编写的
+        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+        # 这个文件夹是用来初始化索引的
+        "PATH": os.path.join(BASE_DIR, "whoosh_index")
+    },
+}
+# 设置搜索结果页，每页显示的数量
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 3
+
+HAYSTACK_SIGNAL_PROCESSOR = "haystack.signals.RealtimeSignalProcessor"

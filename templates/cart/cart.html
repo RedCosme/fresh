@@ -30,6 +30,7 @@
             $("#total_price").text(total_price.toFixed(2));
             {#展示选中的商品条目#}
             $("#total_count").text(total_count);
+            $("#totalnum").text(total_count);
 
         }
         
@@ -110,7 +111,7 @@
     </script>
 {% endblock %}
 {% block body %}
-    <div class="total_count">全部商品<em>2</em>件</div>
+    <div class="total_count">全部商品<em id="totalnum">2</em>件</div>
     <ul class="cart_list_th clearfix">
 		<li class="col01">商品名称</li>
 		<li class="col02">商品单位</li>
@@ -119,6 +120,7 @@
 		<li class="col05">小计</li>
 		<li class="col06">操作</li>
 	</ul>
+    {% if carts %}
     <form action="{% url 'order:order' %}" method="get">
     {% for cart in carts %}
         <ul class="cart_list_td clearfix" id="{{ cart.id }}">
@@ -146,4 +148,7 @@
 		<li class="col04"><input type="submit" value="结算" ></li>
 	</ul>
     </form>
+    {% else %}
+        <h4><p class="cart_list_td clearfix">您的购物车空空如也...</p></h4>
+    {% endif %}
 {% endblock %}

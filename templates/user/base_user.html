@@ -5,9 +5,9 @@
 		<div class="left_menu_con clearfix">
 			<h3>用户中心</h3>
 			<ul>
-				<li><a class="active" href="user_center_info.html">· 个人信息</a></li>
-				<li><a href="user_center_order.html">· 全部订单</a></li>
-				<li><a href="user_center_site.html">· 收货地址</a></li>
+				<li><a href="/account/info/" {% if active == "info" %} class="active" {% endif %}>· 个人信息</a></li>
+				<li><a href="/account/all_order/1/" {% if active == "all_order" %} class="active" {% endif %} >· 全部订单</a></li>
+				<li><a href="user_center_site.html" {% if active == "site" %} class="active" {% endif %}>· 收货地址</a></li>
 			</ul>
 		</div>
 {#        输出用户中心右侧显示内容占位#}
